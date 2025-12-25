@@ -1,0 +1,10 @@
+﻿@page
+@model GymTrackerProject.Pages.Workouts.AddWorkoutModel
+@{
+    ViewData["Title"] = "Создать тренировку";
+}
+
+<form method="post">
+    <input type="text" asp-for="WorkoutName">
+    <button type="submit">Создать тренировку</button>
+</form>

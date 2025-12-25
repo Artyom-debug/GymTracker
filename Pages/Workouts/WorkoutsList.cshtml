@@ -1,0 +1,27 @@
+﻿@page
+@model GymTrackerProject.Pages.Workouts.WorkoutListModel
+@{
+}
+
+@if(Model.WorkoutCount == 0)
+{
+	<p>Здесь пока ничего нет. Добавьте тренировки.</p>
+}
+else
+{
+	<ul>
+		@foreach (var workout in Model.Workouts)
+		{
+			<li class="mb-2">
+				<a class="text-decoration-none"
+				   asp-page="/Workouts/Workout"
+				   asp-route-WorkoutId="@workout.WorkoutId"
+				   asp-route-WorkoutName="@workout.Name">
+					@workout.CreatedDate.ToShortDateString(): @workout.Name
+				</a>
+			</li>
+		}
+	</ul>
+}
+
+<a class="btn btn-yellow btn-lg px-4 fw-semibold" asp-page="/Workouts/AddWorkout">Добавить тренировку</a>

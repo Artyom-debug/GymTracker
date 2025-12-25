@@ -1,0 +1,77 @@
+﻿@page "/Register"
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<section class="py-5" style="background: var(--black-dark); min-height: 100vh; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+
+                <div class="p-4 p-md-5" style="background: var(--black-primary); border-radius: 1.5rem; box-shadow: 0 25px 45px rgba(0,0,0,0.55), inset 0 0 25px rgba(255,255,255,0.04);">
+                    <h2 class="text-white fw-bold mb-4 text-center">Создание аккаунта</h2>
+
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control bg-dark text-white" autocomplete="username" placeholder="name@example.com" />
+                            <label asp-for="Input.Email" class="text-white-50">Email</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control bg-dark text-white" autocomplete="new-password" placeholder="password" />
+                            <label asp-for="Input.Password" class="text-white-50">Пароль</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.ConfirmPassword" class="form-control bg-dark text-white" autocomplete="new-password" placeholder="password" />
+                            <label asp-for="Input.ConfirmPassword" class="text-white-50">Подтверждение пароля</label>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <button id="registerSubmit" type="submit"
+                                class="w-100 btn btn-yellow btn-lg fw-semibold mt-3">
+                            Зарегистрироваться
+                        </button>
+                    </form>
+
+                    <div class="mt-5 text-center">
+                        <h4 class="text-white mb-3">Войти с помощью</h4>
+                        <hr class="border-secondary mb-4" />
+
+                        @{
+                            if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                            {
+                                <p class="text-white-50 small">Нет доступных провайдеров авторизации.</p>
+                            }
+                            else
+                            {
+                                <form id="external-account" asp-page="./ExternalLogin"
+                                      asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+                                    @foreach (var provider in Model.ExternalLogins!)
+                                    {
+                                        <button type="submit"
+                                                class="btn btn-outline-yellow btn-lg w-100 mb-2"
+                                                name="provider" value="@provider.Name">
+                                            @provider.DisplayName
+                                        </button>
+                                    }
+                                </form>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

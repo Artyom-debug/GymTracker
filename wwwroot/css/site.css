@@ -1,0 +1,301 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem var(--black-dark), 0 0 0 0.25rem var(--yellow-primary);
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+/* Yellow-Black Color Scheme */
+:root {
+    --yellow-primary: #FFC107;
+    --yellow-dark: #FFA000;
+    --yellow-light: #FFD54F;
+    --black-primary: #1a1a1a;
+    --black-dark: #000000;
+    --black-light: #2d2d2d;
+    --text-dark: #212529;
+    --text-light: #f8f9fa;
+}
+
+/* Typography Improvements */
+body {
+    background-color: var(--black-dark);
+    color: var(--text-light);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+p {
+    line-height: 1.7;
+}
+
+/* Hero Section Styles - Yellow-Black Theme */
+.hero-section {
+    background: var(--black-dark);
+    padding-top: 3rem !important;
+    background: radial-gradient(circle at 20% 80%, rgba(255, 193, 7, 0.2) 0%, transparent 60%);
+    border-radius: 2rem 2rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 30% 50%, rgba(255, 193, 7, 0.08) 0%, transparent 60%);
+        pointer-events: none;
+    }
+
+.hero-content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+@media (min-width: 992px) {
+    .hero-content {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+.hero-icon svg {
+    opacity: 0.95;
+    filter: drop-shadow(0 4px 12px rgba(255, 193, 7, 0.3));
+}
+
+/* Yellow Button Styles */
+.btn-yellow {
+    background-color: var(--yellow-primary);
+    border-color: var(--yellow-primary);
+    color: var(--black-dark);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+    .btn-yellow:hover {
+        background-color: var(--yellow-dark);
+        border-color: var(--yellow-dark);
+        color: var(--black-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+    }
+
+    .btn-yellow:active {
+        transform: translateY(0);
+    }
+
+.btn-outline-yellow {
+    border-color: var(--yellow-primary);
+    color: var(--yellow-primary);
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+    .btn-outline-yellow:hover {
+        background-color: var(--yellow-primary);
+        border-color: var(--yellow-primary);
+        color: var(--black-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+    }
+
+/* Text Color Utilities */
+.text-yellow {
+    color: var(--yellow-primary) !important;
+}
+
+.text-dark-emphasis {
+    color: #adb5bd !important;
+}
+
+/* Feature Cards */
+.feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--black-light);
+    border-color: #3d3d3d !important;
+    color: var(--text-light);
+}
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 0.75rem 1.5rem rgba(255, 193, 7, 0.2) !important;
+        border-color: var(--yellow-primary) !important;
+        background: var(--black-primary);
+    }
+
+.feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 193, 7, 0.15);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+    background: rgba(255, 193, 7, 0.3);
+    transform: scale(1.1);
+}
+
+/* Stats Section */
+.stats-section {
+    border-radius: 1rem;
+    background: linear-gradient(135deg, var(--black-light) 0%, var(--black-primary) 100%) !important;
+}
+
+.stat-item {
+    padding: 1.5rem;
+    color: var(--text-light);
+}
+
+/* CTA Section */
+.cta-section {
+    margin-bottom: -1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+    }
+
+    .cta-section .container {
+        position: relative;
+        z-index: 1;
+    }
+
+/* Navigation and Footer Styles */
+.navbar {
+    background-color: var(--black-primary) !important;
+    border-bottom: 1px solid var(--black-light) !important;
+}
+
+.navbar-brand,
+.nav-link {
+    color: var(--text-light) !important;
+}
+
+    .nav-link:hover {
+        color: var(--yellow-primary) !important;
+    }
+
+.footer {
+    background-color: var(--black-primary) !important;
+    border-top: 1px solid var(--black-light) !important;
+    color: var(--text-light) !important;
+}
+
+    .footer a {
+        color: var(--yellow-primary) !important;
+    }
+
+        .footer a:hover {
+            color: var(--yellow-light) !important;
+        }
+
+/* Container adjustments */
+.container {
+    color: var(--text-light);
+}
+
+main {
+    color: var(--text-light);
+}
+
+/* Additional dark theme adjustments */
+.border {
+    border-color: var(--black-light) !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(255, 193, 7, 0.1) !important;
+}
+
+/* Ensure all text is visible on dark background */
+.text-muted {
+    color: #adb5bd !important;
+}
+
+/* Navbar toggler icon for dark theme */
+.navbar-toggler {
+    border-color: var(--black-light);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    .display-3 {
+        font-size: 2.25rem;
+    }
+
+    .display-4 {
+        font-size: 2rem;
+    }
+
+    .display-5 {
+        font-size: 1.75rem;
+    }
+
+    .lead {
+        font-size: 1.1rem !important;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+}

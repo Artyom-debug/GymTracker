@@ -1,0 +1,40 @@
+﻿@page "/Workout/{WorkoutId}/{WorkoutName?}"
+@model GymTrackerProject.Pages.Workouts.WorkoutModel
+@{
+    ViewData["Title"] = Model.WorkoutName ?? "Тренировка";
+}
+
+@if(Model.Details.Count == 0)
+{
+    <p>Здесь пока нет упражнений.</p>
+}
+else
+{
+    <ul>
+    @foreach (var detail in Model.Details)
+    {
+       <li>
+            <div class="card p-3 mb-2">
+
+                @if (!Model.Details.Any())
+                {
+                    <p class="text-muted">Нет прогресса</p>
+                }
+                else
+                {
+                    <ul>
+                        @foreach (var sets in detail.Progress)
+                        {
+                            <li>@sets.UpdatedDate.ToShortDateString(): @sets.Weight кг × @sets.Reps</li>
+                        }
+                    </ul>
+                }
+            </div>
+       </li>
+    }
+</ul>
+}
+
+
+
+
