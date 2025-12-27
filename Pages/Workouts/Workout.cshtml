@@ -14,6 +14,7 @@ else
     @foreach (var detail in Model.Details)
     {
        <li>
+           @detail.ExerciseName @detail.ExerciseCategory
             <div class="card p-3 mb-2">
 
                 @if (!Model.Details.Any())
@@ -32,9 +33,28 @@ else
             </div>
        </li>
     }
-</ul>
+    </ul>
 }
+<button class="btn btn-primary"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#addExerciseBlock"
+        aria-expanded="false"
+        aria-controls="addExerciseBlock">
+    Добавить упражнение
+</button>
 
+<div class="collapse mt-3" id="addExerciseBlock">
+    <form method="post" asp-page-handler="AddExercise" class="d-flex gap-2 align-items-start">
+        <input type="hidden" asp-for="WorkoutId" />
+        <input type="hidden" asp-for="WorkoutName" />
 
+        <select class="form-select" asp-for="SelectedExerciseId" asp-items="Model.Items">
+            <option value="">-- выберите упражнение --</option>
+        </select>
+
+        <button class="btn btn-success" type="submit">Добавить</button>
+    </form>
+</div>
 
 

@@ -31,7 +31,7 @@ public class GetWorkoutDetailsQueryHandler : IRequestHandler<GetWorkoutDetailsQu
                     ExerciseName: g.Key.Name,
                     ExerciseCategory: g.Key.Category,
                     Progress: g
-                        .OrderBy(t => t.UpdatedProgress)
+                        .OrderByDescending(t => t.UpdatedProgress)
                         .Select(t => new ExerciseSets(
                                 Weight: t.Weight,
                                 Reps: t.Reps,
