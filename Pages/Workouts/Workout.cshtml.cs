@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace GymTrackerProject.Pages.Workouts;
 
@@ -30,7 +31,18 @@ public class WorkoutModel : PageModel
     public string WorkoutName { get; set; }
 
     [BindProperty(SupportsGet = true)]
-    public int SelectedExerciseId { get; set; }
+    [Required(ErrorMessage = "Выберите упражнение")]
+    public int? SelectedExerciseId { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    [Required(ErrorMessage = "Введите повторения")]
+    [Range(0, 1000000, ErrorMessage = "Повторения не могут быть меньше 0")]
+    public int? Reps { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    [Required(ErrorMessage = "Введите вес")]
+    [Range(0, 1000000, ErrorMessage = "Вес не может быть меньше 0")]
+    public double? Weight {  get; set; }
 
     private async Task LoadExercises()
     { 
@@ -57,24 +69,24 @@ public class WorkoutModel : PageModel
             await LoadExercises();
             return Page();
         }
-        await _mediator.Send(new AddProgressCommand(SelectedExerciseId, WorkoutId, 0, 0));
+        await _mediator.Send(new AddProgressCommand(SelectedExerciseId!.Value, WorkoutId, 0, 0));
         return RedirectToPage(new { WorkoutId, WorkoutName });
     }
 
-    public async Task<IActionResult> OnPostAddProgressAsync(int exerciseId, double weight, int reps)
+    public async Task<IActionResult> OnPostAddProgressAsync()
     {
         if(!ModelState.IsValid)
             return Page();
-        await _mediator.Send(new AddProgressCommand(exerciseId, WorkoutId, weight, reps));
+        await _mediator.Send(new AddProgressCommand(SelectedExerciseId!.Value, WorkoutId, Weight!.Value, Reps!.Value));
         return RedirectToPage( new { WorkoutId, WorkoutName });
     }
 
-    public async Task<IActionResult> OnPostUpdateProgressAsync(int trackerId, double weight, int reps)
-    {
-        if(!ModelState.IsValid)
-            return Page();
-        await _mediator.Send(new UpdateProgressCommand(trackerId, weight, reps));
-        return RedirectToPage(WorkoutId);
-    }
+    //public async Task<IActionResult> OnPostUpdateProgressAsync(int trackerId, double weight, int reps)
+    //{
+    //    if(!ModelState.IsValid)
+    //        return Page();
+    //    await _mediator.Send(new UpdateProgressCommand(trackerId, weight, reps));
+    //    return RedirectToPage(WorkoutId);
+    //}
 
 }

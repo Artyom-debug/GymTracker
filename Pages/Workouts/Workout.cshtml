@@ -10,29 +10,75 @@
 }
 else
 {
-    <ul>
-    @foreach (var detail in Model.Details)
-    {
-       <li>
-           @detail.ExerciseName @detail.ExerciseCategory
-            <div class="card p-3 mb-2">
+    <ul class="list-group">
+        @foreach (var detail in Model.Details)
+        {
+            var progressCollapseId = $"progress-{detail.ExerciseId}";
+            var addSetCollapseId = $"addset-{detail.ExerciseId}";
 
-                @if (!Model.Details.Any())
-                {
-                    <p class="text-muted">Нет прогресса</p>
-                }
-                else
-                {
-                    <ul>
-                        @foreach (var sets in detail.Progress)
+            <li class="list-group-item">
+                <button class="btn btn-link p-0 text-decoration-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#@progressCollapseId"
+                        aria-expanded="false"
+                        aria-controls="@progressCollapseId">
+                    @detail.ExerciseName <span class="text-muted">@detail.ExerciseCategory</span>
+                </button>
+
+                <div class="collapse mt-2" id="@progressCollapseId">
+                    <div class="card card-body">
+
+                        @if (!detail.Progress.Any())
                         {
-                            <li>@sets.UpdatedDate.ToShortDateString(): @sets.Weight кг × @sets.Reps</li>
+                            <p class="text-muted mb-2">Нет прогресса</p>
                         }
-                    </ul>
-                }
-            </div>
-       </li>
-    }
+                        else
+                        {
+                            <ul class="mb-3">
+                                @foreach (var sets in detail.Progress)
+                                {
+                                    <li>@sets.UpdatedDate.ToShortDateString(): @sets.Weight кг × @sets.Reps</li>
+                                }
+                            </ul>
+                        }
+                        <button class="btn btn-sm btn-outline-primary"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#@addSetCollapseId"
+                                aria-expanded="false"
+                                aria-controls="@addSetCollapseId">
+                            Добавить подход
+                        </button>
+
+                        <div class="collapse mt-2" id="@addSetCollapseId">
+                            <form method="post" asp-page-handler="AddProgress" class="row g-2 align-items-end">
+                                <input type="hidden" asp-for="SelectedExerciseId" value ="@detail.ExerciseId"/>
+                                <input type="hidden" asp-for="WorkoutId" />
+                                <input type="hidden" asp-for="WorkoutName" />
+
+                                <div class="col-6 col-md-4">
+                                    <label class="form-label mb-1">Вес (кг)</label>
+                                    <input class="form-control" type="number" asp-for="Weight" />
+                                    <span class="text-danger" asp-validation-for="Weight"></span>
+                                </div>
+
+                                <div class="col-6 col-md-4">
+                                    <label class="form-label mb-1">Повторы</label>
+                                    <input class="form-control" type="number" asp-for="Reps" />
+                                    <span class="text-danger" asp-validation-for="Reps"></span>
+                                </div>
+
+                                <div class="col-12 col-md-auto">
+                                    <button class="btn btn-success" type="submit">Сохранить</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+        }
     </ul>
 }
 <button class="btn btn-primary"
@@ -52,7 +98,7 @@ else
         <select class="form-select" asp-for="SelectedExerciseId" asp-items="Model.Items">
             <option value="">-- выберите упражнение --</option>
         </select>
-
+        <span class="text-danger" asp-validation-for="SelectedExerciseId"></span>
         <button class="btn btn-success" type="submit">Добавить</button>
     </form>
 </div>
