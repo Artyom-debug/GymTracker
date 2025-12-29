@@ -89,4 +89,19 @@ public class WorkoutModel : PageModel
     //    return RedirectToPage(WorkoutId);
     //}
 
+    public async Task<IActionResult> OnPostDeleteProgress(int id)
+    {
+        if(id <= 0) 
+            return NotFound();
+        await _mediator.Send(new DeleteProgressCommand(id));
+        return RedirectToPage(new {WorkoutId, WorkoutName});
+    }
+
+    public async Task<IActionResult> OnPostDeleteExercise(int exId)
+    {
+        if (exId <= 0)
+            return NotFound();
+        await _mediator.Send(new DeleteExerciseCommand(exId));
+        return RedirectToPage(new { WorkoutId, WorkoutName });
+    }
 }
