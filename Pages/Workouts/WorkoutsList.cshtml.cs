@@ -1,3 +1,4 @@
+using GymTrackerProject.Commands;
 using GymTrackerProject.Data;
 using GymTrackerProject.Queries;
 using Microsoft.AspNetCore.Identity;
@@ -30,5 +31,13 @@ public class WorkoutListModel : PageModel
         Workouts = await _mediator.Send(new GetUsersWorkoutQuery(id));
         WorkoutCount = Workouts.Count();
         return Page(); 
+    }
+
+    public async Task<IActionResult> OnPostDeleteWorkout(int id)
+    {
+        if(!ModelState.IsValid)
+            return Page();
+        await _mediator.Send(new DeleteWorkoutCommand(id));
+        return RedirectToPage();
     }
 }

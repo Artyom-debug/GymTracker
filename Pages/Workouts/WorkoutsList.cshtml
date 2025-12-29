@@ -19,6 +19,12 @@ else
 				   asp-route-WorkoutName="@workout.Name">
 					@workout.CreatedDate.ToShortDateString(): @workout.Name
 				</a>
+
+				<form method="post" asp-page-handler="DeleteWorkout" class="ms-auto"
+					  onsubmit="return confirm('Удалить тренировку?');">
+					<input type="hidden" name="id" value="@workout.WorkoutId" />
+					<button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+				</form>
 			</li>
 		}
 	</ul>
