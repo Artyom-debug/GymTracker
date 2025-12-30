@@ -83,7 +83,7 @@ public class WorkoutModel : PageModel
 
     //public async Task<IActionResult> OnPostUpdateProgressAsync(int trackerId, double weight, int reps)
     //{
-    //    if(!ModelState.IsValid)
+    //    if (!ModelState.IsValid)
     //        return Page();
     //    await _mediator.Send(new UpdateProgressCommand(trackerId, weight, reps));
     //    return RedirectToPage(WorkoutId);

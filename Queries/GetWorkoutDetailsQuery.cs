@@ -5,7 +5,7 @@ namespace GymTrackerProject.Queries;
 public record GetWorkoutDetailsQuery(int WorkoutId) : IRequest<List<WorkoutDetailsDto>>;
 
 public record WorkoutDetailsDto(int ExerciseId, string? ExerciseName, string? ExerciseCategory, List<ExerciseSets> Progress);
-public record ExerciseSets(double Weight, int Reps, DateTime UpdatedDate);
+public record ExerciseSets(int SetId, double Weight, int Reps, DateTime UpdatedDate);
 
 public class GetWorkoutDetailsQueryHandler : IRequestHandler<GetWorkoutDetailsQuery, List<WorkoutDetailsDto>>
 {
@@ -35,7 +35,8 @@ public class GetWorkoutDetailsQueryHandler : IRequestHandler<GetWorkoutDetailsQu
                         .Select(t => new ExerciseSets(
                                 Weight: t.Weight,
                                 Reps: t.Reps,
-                                UpdatedDate: t.UpdatedProgress
+                                UpdatedDate: t.UpdatedProgress,
+                                SetId: t.Id
                             ))
                         .ToList()
              ))

@@ -39,13 +39,13 @@ else
                                 @foreach (var sets in detail.Progress)
                                 {
                                     <li>@sets.UpdatedDate.ToShortDateString(): @sets.Weight кг × @sets.Reps</li>
-                                    @* <form method="post" asp-page-handler="DeleteProgress" class="m-0"
+                                    <form method="post" asp-page-handler="DeleteProgress" class="m-0"
                                           onsubmit="return confirm('Удалить этот подход?');">
-                                        <input type="hidden" name="exId" value="@detail." />
+                                        <input type="hidden" name="id" value="@sets.SetId" />
                                         <input type="hidden" asp-for="WorkoutId" />
                                         <input type="hidden" asp-for="WorkoutName" />
                                         <button type="submit" class="btn btn-sm btn-outline-danger">✕</button>
-                                    </form> *@
+                                    </form>
                                 }
                             </ul>
                         }
