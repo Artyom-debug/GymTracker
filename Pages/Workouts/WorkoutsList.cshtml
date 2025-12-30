@@ -1,33 +1,90 @@
 ﻿@page
 @model GymTrackerProject.Pages.Workouts.WorkoutListModel
 @{
+    ViewData["Title"] = "Мои тренировки";
 }
 
-@if(Model.WorkoutCount == 0)
-{
-	<p>Здесь пока ничего нет. Добавьте тренировки.</p>
-}
-else
-{
-	<ul>
-		@foreach (var workout in Model.Workouts)
-		{
-			<li class="mb-2">
-				<a class="text-decoration-none"
-				   asp-page="/Workouts/Workout"
-				   asp-route-WorkoutId="@workout.WorkoutId"
-				   asp-route-WorkoutName="@workout.Name">
-					@workout.CreatedDate.ToShortDateString(): @workout.Name
-				</a>
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold text-white mb-2">Мои тренировки</h1>
+            <p class="text-light mb-0">Создавайте тренировки и отслеживайте прогресс по упражнениям.</p>
+        </div>
 
-				<form method="post" asp-page-handler="DeleteWorkout" class="ms-auto"
-					  onsubmit="return confirm('Удалить тренировку?');">
-					<input type="hidden" name="id" value="@workout.WorkoutId" />
-					<button type="submit" class="btn btn-danger btn-sm">Удалить</button>
-				</form>
-			</li>
-		}
-	</ul>
-}
+        @if (Model.WorkoutCount == 0)
+        {
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <a asp-page="/Workouts/AddWorkout"
+                       class="card h-100 border rounded-3 shadow-sm text-decoration-none d-flex align-items-center justify-content-center"
+                       style="background: rgba(255,255,255,0.06); min-height: 210px;">
+                        <div class="text-center p-4">
+                            <div class="fw-bold text-yellow" style="font-size: 64px; line-height: 1;">+</div>
+                            <div class="fw-semibold text-white mt-2">Добавить тренировку</div>
+                            <div class="text-light" style="opacity:.85;">Создать новую</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var workout in Model.Workouts)
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 border rounded-3 shadow-sm"
+                             style="background: rgba(255,255,255,0.06);">
+                            <div class="card-body p-4 d-flex flex-column">
+                                <div class="mb-3">
+                                    <div class="text-yellow fw-semibold" style="opacity: .95;">
+                                        @workout.CreatedDate.ToShortDateString()
+                                    </div>
+                                    <h4 class="fw-bold text-white mb-0 mt-1">
+                                        @workout.Name
+                                    </h4>
+                                </div>
 
-<a class="btn btn-yellow btn-lg px-4 fw-semibold" asp-page="/Workouts/AddWorkout">Добавить тренировку</a>
+                                <p class="text-light mb-4" style="opacity: .9;">
+                                    Откройте тренировку, чтобы посмотреть упражнения и прогресс.
+                                </p>
+
+                                <div class="mt-auto d-flex gap-2 flex-wrap">
+                                    <a class="btn btn-outline-yellow fw-semibold"
+                                       asp-page="/Workouts/Workout"
+                                       asp-route-WorkoutId="@workout.WorkoutId"
+                                       asp-route-WorkoutName="@workout.Name">
+                                        Открыть
+                                    </a>
+
+                                    <form method="post"
+                                          asp-page-handler="DeleteWorkout"
+                                          onsubmit="return confirm('Удалить тренировку?');"
+                                          class="m-0">
+                                        <input type="hidden" name="id" value="@workout.WorkoutId" />
+                                        <button type="submit" class="btn btn-outline-danger fw-semibold">
+                                            Удалить
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="col-12 col-md-6 col-lg-4">
+                    <a asp-page="/Workouts/AddWorkout"
+                       class="card h-100 border rounded-3 shadow-sm text-decoration-none d-flex align-items-center justify-content-center"
+                       style="background: rgba(255,255,255,0.06); min-height: 210px;">
+                        <div class="text-center p-4">
+                            <div class="fw-bold text-yellow" style="font-size: 64px; line-height: 1;">+</div>
+                            <div class="fw-semibold text-white mt-2">Добавить тренировку</div>
+                            <div class="text-light" style="opacity:.85;">Создать новую</div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        }
+
+    </div>
+</section>

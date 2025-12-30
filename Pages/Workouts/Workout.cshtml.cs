@@ -64,11 +64,6 @@ public class WorkoutModel : PageModel
     }
     public async Task<IActionResult> OnPostAddExerciseAsync()
     {
-        if(!ModelState.IsValid)
-        {
-            await LoadExercises();
-            return Page();
-        }
         await _mediator.Send(new AddProgressCommand(SelectedExerciseId!.Value, WorkoutId, 0, 0));
         return RedirectToPage(new { WorkoutId, WorkoutName });
     }

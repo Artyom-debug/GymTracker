@@ -4,120 +4,213 @@
     ViewData["Title"] = Model.WorkoutName ?? "Тренировка";
 }
 
-@if(Model.Details.Count == 0)
-{
-    <p>Здесь пока нет упражнений.</p>
-}
-else
-{
-    <ul class="list-group">
-        @foreach (var detail in Model.Details)
-        {
-            var progressCollapseId = $"progress-{detail.ExerciseId}";
-            var addSetCollapseId = $"addset-{detail.ExerciseId}";
+<section class="py-4 py-md-5">
+    <div class="container">
+        <div class="text-center mb-4 mb-md-5">
+            <h1 class="fw-bold text-white mb-2 display-6 display-md-5">
+                @(Model.WorkoutName ?? "Тренировка")
+            </h1>
+            <p class="text-light mb-0">Упражнения и прогресс по подходам.</p>
 
-            <li class="list-group-item">
-                <button class="btn btn-link p-0 text-decoration-none"
+            <div class="mt-3 d-flex justify-content-center">
+                <a class="btn btn-outline-yellow fw-semibold"
+                   asp-page="/Workouts/WorkoutsList">
+                    ← Назад к списку
+                </a>
+            </div>
+        </div>
+
+        @if (Model.Details.Count == 0)
+        {
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8">
+                    <div class="card border rounded-3 shadow-sm"
+                         style="background: rgba(255,255,255,0.06);">
+                        <div class="card-body p-4 p-md-5 text-center">
+                            <h4 class="fw-bold text-white mb-2">Здесь пока нет упражнений</h4>
+                            <p class="text-light mb-0">Добавьте упражнение ниже, чтобы начать вести прогресс.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row g-3 g-md-4">
+                @foreach (var detail in Model.Details)
+                {
+                    var progressCollapseId = $"progress-{detail.ExerciseId}";
+                    var addSetCollapseId = $"addset-{detail.ExerciseId}";
+
+                    <div class="col-12 col-lg-8 mx-auto">
+                        <div class="card border rounded-3 shadow-sm"
+                             style="background: rgba(255,255,255,0.06);">
+                            <div class="card-body p-3 p-md-4">
+
+                                <button class="btn btn-link p-0 text-decoration-none w-100 text-start"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#@progressCollapseId"
+                                        aria-expanded="false"
+                                        aria-controls="@progressCollapseId">
+                                    <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-1">
+                                        <div class="fw-bold text-white fs-5">
+                                            @detail.ExerciseName
+                                        </div>
+                                        <div class="text-muted">
+                                            @detail.ExerciseCategory
+                                        </div>
+                                    </div>
+                                </button>
+
+                                <div class="collapse mt-3" id="@progressCollapseId">
+                                    <div class="card border rounded-3"
+                                         style="background: rgba(0,0,0,0.25); border-color: var(--black-light) !important;">
+                                        <div class="card-body p-3 p-md-4">
+
+                                            @if (!detail.Progress.Any())
+                                            {
+                                                <p class="text-muted mb-3">Нет прогресса</p>
+                                            }
+                                            else
+                                            {
+                                                <ul class="list-group mb-3">
+                                                    @foreach (var sets in detail.Progress)
+                                                    {
+                                                        <li class="list-group-item d-flex align-items-center justify-content-between gap-2"
+                                                            style="background: rgba(255,255,255,0.04); border-color: var(--black-light) !important; color: var(--text-light);">
+                                                            <span>
+                                                                @sets.UpdatedDate.ToShortDateString(): @sets.Weight кг × @sets.Reps
+                                                            </span>
+
+                                                            <form method="post" asp-page-handler="DeleteProgress" class="m-0"
+                                                                  onsubmit="return confirm('Удалить этот подход?');">
+                                                                <input type="hidden" name="id" value="@sets.SetId" />
+                                                                <input type="hidden" asp-for="WorkoutId" />
+                                                                <input type="hidden" asp-for="WorkoutName" />
+                                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                                    ✕
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            <div class="row g-2">
+                                                <div class="col-12 col-sm-6">
+                                                    <button class="btn btn-outline-yellow fw-semibold w-100"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#@addSetCollapseId"
+                                                            aria-expanded="false"
+                                                            aria-controls="@addSetCollapseId">
+                                                        + Добавить подход
+                                                    </button>
+                                                </div>
+
+                                                <div class="col-12 col-sm-6">
+                                                    <form method="post" asp-page-handler="DeleteExercise" class="m-0 w-100"
+                                                          onsubmit="return confirm('Удалить упражнение и все подходы из этой тренировки?');">
+                                                        <input type="hidden" name="exId" value="@detail.ExerciseId" />
+                                                        <input type="hidden" asp-for="WorkoutId" />
+                                                        <input type="hidden" asp-for="WorkoutName" />
+                                                        <button type="submit" class="btn btn-outline-danger fw-semibold w-100">
+                                                            Удалить упражнение
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="collapse mt-3" id="@addSetCollapseId">
+                                                <div class="card border rounded-3"
+                                                     style="background: rgba(255,255,255,0.04); border-color: var(--black-light) !important;">
+                                                    <div class="card-body p-3 p-md-4">
+
+                                                        <form method="post" asp-page-handler="AddProgress" class="row g-2">
+                                                            <input type="hidden" asp-for="SelectedExerciseId" value="@detail.ExerciseId" />
+                                                            <input type="hidden" asp-for="WorkoutId" />
+                                                            <input type="hidden" asp-for="WorkoutName" />
+
+                                                            <div class="col-12 col-sm-6">
+                                                                <label class="form-label text-light fw-semibold mb-1">Вес (кг)</label>
+                                                                <input class="form-control" type="number" asp-for="Weight" />
+                                                                <span class="text-danger" asp-validation-for="Weight"></span>
+                                                            </div>
+
+                                                            <div class="col-12 col-sm-6">
+                                                                <label class="form-label text-light fw-semibold mb-1">Повторы</label>
+                                                                <input class="form-control" type="number" asp-for="Reps" />
+                                                                <span class="text-danger" asp-validation-for="Reps"></span>
+                                                            </div>
+
+                                                            <div class="col-12">
+                                                                <button class="btn btn-yellow fw-semibold w-100" type="submit">
+                                                                    Сохранить подход
+                                                                </button>
+                                                            </div>
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        <!-- Add exercise block -->
+        <div class="row justify-content-center mt-4 mt-md-5">
+            <div class="col-12 col-lg-8">
+
+                <button class="btn btn-outline-yellow btn-lg fw-semibold w-100"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#@progressCollapseId"
+                        data-bs-target="#addExerciseBlock"
                         aria-expanded="false"
-                        aria-controls="@progressCollapseId">
-                    @detail.ExerciseName <span class="text-muted">@detail.ExerciseCategory</span>
+                        aria-controls="addExerciseBlock">
+                    + Добавить упражнение
                 </button>
 
-                <div class="collapse mt-2" id="@progressCollapseId">
-                    <div class="card card-body">
+                <div class="collapse mt-3" id="addExerciseBlock">
+                    <div class="card border rounded-3 shadow-sm"
+                         style="background: rgba(255,255,255,0.06);">
+                        <div class="card-body p-3 p-md-4">
 
-                        @if (!detail.Progress.Any())
-                        {
-                            <p class="text-muted mb-2">Нет прогресса</p>
-                        }
-                        else
-                        {
-                            <ul class="mb-3">
-                                @foreach (var sets in detail.Progress)
-                                {
-                                    <li>@sets.UpdatedDate.ToShortDateString(): @sets.Weight кг × @sets.Reps</li>
-                                    <form method="post" asp-page-handler="DeleteProgress" class="m-0"
-                                          onsubmit="return confirm('Удалить этот подход?');">
-                                        <input type="hidden" name="id" value="@sets.SetId" />
-                                        <input type="hidden" asp-for="WorkoutId" />
-                                        <input type="hidden" asp-for="WorkoutName" />
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">✕</button>
-                                    </form>
-                                }
-                            </ul>
-                        }
-                        <button class="btn btn-sm btn-outline-primary"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#@addSetCollapseId"
-                                aria-expanded="false"
-                                aria-controls="@addSetCollapseId">
-                            Добавить подход
-                        </button>
-
-                        <form method="post" asp-page-handler="DeleteExercise" class="m-0"
-                              onsubmit="return confirm('Удалить упражнение и все подходы из этой тренировки?');">
-                            <input type="hidden" name="exId" value="@detail.ExerciseId" />
-                            <input type="hidden" asp-for="WorkoutId" />
-                            <input type="hidden" asp-for="WorkoutName" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                Удалить упражнение
-                            </button>
-                        </form>
-
-                        <div class="collapse mt-2" id="@addSetCollapseId">
-                            <form method="post" asp-page-handler="AddProgress" class="row g-2 align-items-end">
-                                <input type="hidden" asp-for="SelectedExerciseId" value ="@detail.ExerciseId"/>
+                            <form method="post" asp-page-handler="AddExercise" class="row g-2">
                                 <input type="hidden" asp-for="WorkoutId" />
                                 <input type="hidden" asp-for="WorkoutName" />
 
-                                <div class="col-6 col-md-4">
-                                    <label class="form-label mb-1">Вес (кг)</label>
-                                    <input class="form-control" type="number" asp-for="Weight" />
-                                    <span class="text-danger" asp-validation-for="Weight"></span>
+                                <div class="col-12">
+                                    <label class="form-label text-light fw-semibold mb-1">Упражнение</label>
+                                    <select class="form-select" asp-for="SelectedExerciseId" asp-items="Model.Items">
+                                        <option value="">-- выберите упражнение --</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="SelectedExerciseId"></span>
                                 </div>
 
-                                <div class="col-6 col-md-4">
-                                    <label class="form-label mb-1">Повторы</label>
-                                    <input class="form-control" type="number" asp-for="Reps" />
-                                    <span class="text-danger" asp-validation-for="Reps"></span>
-                                </div>
-
-                                <div class="col-12 col-md-auto">
-                                    <button class="btn btn-success" type="submit">Сохранить</button>
+                                <div class="col-12">
+                                    <button class="btn btn-yellow fw-semibold w-100" type="submit">
+                                        Добавить
+                                    </button>
                                 </div>
                             </form>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
-            </li>
-        }
-    </ul>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
-<button class="btn btn-primary"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#addExerciseBlock"
-        aria-expanded="false"
-        aria-controls="addExerciseBlock">
-    Добавить упражнение
-</button>
-
-<div class="collapse mt-3" id="addExerciseBlock">
-    <form method="post" asp-page-handler="AddExercise" class="d-flex gap-2 align-items-start">
-        <input type="hidden" asp-for="WorkoutId" />
-        <input type="hidden" asp-for="WorkoutName" />
-
-        <select class="form-select" asp-for="SelectedExerciseId" asp-items="Model.Items">
-            <option value="">-- выберите упражнение --</option>
-        </select>
-        <span class="text-danger" asp-validation-for="SelectedExerciseId"></span>
-        <button class="btn btn-success" type="submit">Добавить</button>
-    </form>
-</div>
-
-

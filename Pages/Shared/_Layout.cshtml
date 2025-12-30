@@ -12,23 +12,34 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Gym Tracker</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <div class="d-flex align-items-center gap-3">
+                    <a class="navbar-brand fw-semibold mb-0"
+                       asp-area="" asp-page="/Index">
+                        Gym Tracker
+                    </a>
+
+                    <a class="nav-link mb-0"
+                       asp-area="" asp-page="/Index">
+                        На главную
+                    </a>
+                </div>
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Index">На главную</a>
-                        </li>
-                    </ul>
+                <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
                     <partial name="_LoginPartial" />
                 </div>
+
             </div>
         </nav>
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">

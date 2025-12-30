@@ -1,76 +1,81 @@
 ﻿@page "/Register"
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Регистрация";
 }
 
-<section class="py-5" style="background: var(--black-dark); min-height: 100vh; display: flex; align-items: center;">
+<section class="py-4 py-md-5">
     <div class="container">
+
+        <!-- Заголовок -->
+        <div class="text-center mb-4 mb-md-5">
+            <h1 class="fw-bold text-white mb-2 display-6 display-md-5">Регистрация</h1>
+            <p class="text-light mb-0 px-2 px-md-0">
+                Создайте аккаунт, чтобы сохранять тренировки и прогресс.
+            </p>
+        </div>
+
         <div class="row justify-content-center">
-            <div class="col-lg-6">
+            <div class="col-12 col-md-10 col-lg-6 col-xl-5">
 
-                <div class="p-4 p-md-5" style="background: var(--black-primary); border-radius: 1.5rem; box-shadow: 0 25px 45px rgba(0,0,0,0.55), inset 0 0 25px rgba(255,255,255,0.04);">
-                    <h2 class="text-white fw-bold mb-4 text-center">Создание аккаунта</h2>
+                <!-- Карточка как в Login -->
+                <div class="card border rounded-3 shadow-sm overflow-hidden"
+                     style="background: radial-gradient(circle at 20% 10%, rgba(255, 193, 7, 0.18) 0%, rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.06) 100%);
+                            border-color: var(--black-light) !important;">
+                    <div class="card-body p-4 p-md-5">
 
-                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+                        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post"
+                              class="d-flex flex-column gap-3">
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-                        <div class="form-floating mb-3">
-                            <input asp-for="Input.Email" class="form-control bg-dark text-white" autocomplete="username" placeholder="name@example.com" />
-                            <label asp-for="Input.Email" class="text-white-50">Email</label>
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
-                        </div>
+                            <div class="form-floating">
+                                <input asp-for="Input.Email"
+                                       class="form-control"
+                                       autocomplete="username"
+                                       placeholder="name@example.com" />
+                                <label asp-for="Input.Email" class="form-label">Email</label>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
 
-                        <div class="form-floating mb-3">
-                            <input asp-for="Input.Password" class="form-control bg-dark text-white" autocomplete="new-password" placeholder="password" />
-                            <label asp-for="Input.Password" class="text-white-50">Пароль</label>
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
-                        </div>
+                            <div class="form-floating">
+                                <input asp-for="Input.Password"
+                                       class="form-control"
+                                       autocomplete="new-password"
+                                       placeholder="password" />
+                                <label asp-for="Input.Password" class="form-label">Пароль</label>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
 
-                        <div class="form-floating mb-3">
-                            <input asp-for="Input.ConfirmPassword" class="form-control bg-dark text-white" autocomplete="new-password" placeholder="password" />
-                            <label asp-for="Input.ConfirmPassword" class="text-white-50">Подтверждение пароля</label>
-                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                        </div>
+                            <div class="form-floating">
+                                <input asp-for="Input.ConfirmPassword"
+                                       class="form-control"
+                                       autocomplete="new-password"
+                                       placeholder="password" />
+                                <label asp-for="Input.ConfirmPassword" class="form-label">Подтверждение пароля</label>
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
 
-                        <button id="registerSubmit" type="submit"
-                                class="w-100 btn btn-yellow btn-lg fw-semibold mt-3">
-                            Зарегистрироваться
-                        </button>
-                    </form>
+                            <button id="registerSubmit" type="submit"
+                                    class="btn btn-yellow btn-lg fw-semibold w-100">
+                                Зарегистрироваться
+                            </button>
 
-                    <div class="mt-5 text-center">
-                        <h4 class="text-white mb-3">Войти с помощью</h4>
-                        <hr class="border-secondary mb-4" />
+                            <div class="pt-2 text-center">
+                                <a class="text-yellow text-decoration-none fw-semibold"
+                                   asp-area="Identity" asp-page="/Account/Login">
+                                    Уже есть аккаунт? Войти
+                                </a>
+                            </div>
+                        </form>
 
-                        @{
-                            if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                            {
-                                <p class="text-white-50 small">Нет доступных провайдеров авторизации.</p>
-                            }
-                            else
-                            {
-                                <form id="external-account" asp-page="./ExternalLogin"
-                                      asp-route-returnUrl="@Model.ReturnUrl" method="post">
-
-                                    @foreach (var provider in Model.ExternalLogins!)
-                                    {
-                                        <button type="submit"
-                                                class="btn btn-outline-yellow btn-lg w-100 mb-2"
-                                                name="provider" value="@provider.Name">
-                                            @provider.DisplayName
-                                        </button>
-                                    }
-                                </form>
-                            }
-                        }
                     </div>
                 </div>
+
             </div>
         </div>
+
     </div>
 </section>
-
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

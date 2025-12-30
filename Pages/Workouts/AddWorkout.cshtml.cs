@@ -35,23 +35,15 @@ public class AddWorkoutModel : PageModel
         {
             return Page();
         }
-
-        try
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return RedirectToPage("/Account/Login");
-            }
-            var userId = user.Id;
-            var command = new CreateWorkoutCommand(WorkoutName, userId);
-            var workoutId = await _mediator.Send(command);
+            return RedirectToPage("/Account/Login");
+        }
+        var userId = user.Id;
+        var command = new CreateWorkoutCommand(WorkoutName, userId);
+        var workoutId = await _mediator.Send(command);
             
-            return RedirectToPage("/Workouts/WorkoutsList");
-        }
-        catch (Exception ex)
-        {
-            return Page();
-        }
+        return RedirectToPage("/Workouts/WorkoutsList");
     }
 }

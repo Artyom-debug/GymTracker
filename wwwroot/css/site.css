@@ -300,14 +300,72 @@ main {
     }
 }
 
-/* Chrome, Edge, Safari */
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-/* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
+}
+
+.form-select, .form-control {
+    background-color: rgba(255,255,255,0.06);
+    border-color: var(--black-light);
+    color: var(--text-light);
+}
+
+.form-select:focus, .form-control:focus {
+        background-color: rgba(255,255,255,0.08);
+        color: var(--text-light);
+        border-color: var(--yellow-primary);
+}
+
+.form-select option {
+        color: #000;
+}
+
+.form-floating > .form-control {
+    background-color: rgba(255,255,255,0.06);
+    border-color: var(--black-light);
+    color: var(--text-light);
+    caret-color: var(--yellow-primary);
+}
+
+    .form-floating > .form-control::placeholder {
+        color: rgba(248, 249, 250, 0.45);
+    }
+
+    .form-floating > .form-control:focus {
+        background-color: rgba(255,255,255,0.08);
+        color: var(--text-light);
+        border-color: var(--yellow-primary);
+        box-shadow: 0 0 0 0.1rem var(--black-dark), 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+    }
+
+.form-floating > label {
+    color: rgba(248, 249, 250, 0.7);
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: rgba(248, 249, 250, 0.75);
+    opacity: 1;
+}
+
+.form-floating > label::after {
+    background-color: transparent !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-light);
+    -webkit-box-shadow: 0 0 0px 1000px rgba(255,255,255,0.06) inset;
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+.navbar .btn.btn-link.nav-link {
+    text-decoration: none;
 }

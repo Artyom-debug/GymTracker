@@ -4,7 +4,58 @@
     ViewData["Title"] = "Создать тренировку";
 }
 
-<form method="post">
-    <input type="text" asp-for="WorkoutName">
-    <button type="submit">Создать тренировку</button>
-</form>
+<section class="py-4 py-md-5">
+    <div class="container">
+        <div class="text-center mb-4 mb-md-5">
+            <h1 class="fw-bold text-white mb-2 display-6 display-md-5">Создать тренировку</h1>
+            <p class="text-light mb-0 px-2 px-md-0">
+                Придумайте название — например: “Ноги”, “Грудь/трицепс”, “Full Body”.
+            </p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-6">
+
+                <div class="card border rounded-3 shadow-sm"
+                     style="background: rgba(255,255,255,0.06);">
+                    <div class="card-body p-4 p-md-5">
+
+                        <form method="post" class="d-flex flex-column gap-3">
+                            <div>
+                                <label class="form-label text-white fw-semibold" asp-for="WorkoutName"></label>
+                                <input class="form-control form-control-lg"
+                                       asp-for="WorkoutName"
+                                       type="text"
+                                       placeholder="Введите название тренировки"
+                                       autocomplete="off" />
+                                <span class="text-danger" asp-validation-for="WorkoutName"></span>
+                            </div>
+                            <div class="row g-2 mt-2">
+                                <div class="col-12 col-sm-6">
+                                    <a class="btn btn-outline-yellow btn-lg fw-semibold w-100"
+                                       asp-page="/Workouts/WorkoutsList">
+                                        Назад
+                                    </a>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <button type="submit" class="btn btn-yellow btn-lg fw-semibold w-100">
+                                        Создать тренировку
+                                    </button>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
