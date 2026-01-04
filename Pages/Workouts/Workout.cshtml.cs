@@ -76,13 +76,15 @@ public class WorkoutModel : PageModel
         return RedirectToPage( new { WorkoutId, WorkoutName });
     }
 
-    //public async Task<IActionResult> OnPostUpdateProgressAsync(int trackerId, double weight, int reps)
-    //{
-    //    if (!ModelState.IsValid)
-    //        return Page();
-    //    await _mediator.Send(new UpdateProgressCommand(trackerId, weight, reps));
-    //    return RedirectToPage(WorkoutId);
-    //}
+    public async Task<IActionResult> OnPostUpdateProgressAsync(int trackerId, double weight, int reps)
+    {
+        if (trackerId <= 0)
+            return NotFound();
+        if (weight < 0) ModelState.AddModelError(string.Empty, "Вес не может быть меньше 0");
+        if (reps < 0) ModelState.AddModelError(string.Empty, "Повторы не могут быть меньше 0");
+        await _mediator.Send(new UpdateProgressCommand(trackerId, weight, reps));
+        return RedirectToPage(new {WorkoutId, WorkoutName});
+    }
 
     public async Task<IActionResult> OnPostDeleteProgress(int id)
     {

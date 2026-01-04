@@ -4,6 +4,7 @@ using GymTrackerProject.Queries;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 namespace GymTrackerProject.Pages.Workouts;
 
@@ -13,6 +14,10 @@ public class WorkoutListModel : PageModel
     private readonly UserManager<ApplicationUser> _userManager;
     public List<WorkoutDto> Workouts { get; set; } = new();
     public int WorkoutCount { get; set; }
+
+    [BindProperty]
+    [Required(ErrorMessage = "Укажите название")]
+    public string NewWorkoutName { get; set; }
 
     public WorkoutListModel(IMediator mediator, UserManager<ApplicationUser> userManager)
     {
@@ -35,9 +40,20 @@ public class WorkoutListModel : PageModel
 
     public async Task<IActionResult> OnPostDeleteWorkout(int id)
     {
-        if(!ModelState.IsValid)
-            return Page();
         await _mediator.Send(new DeleteWorkoutCommand(id));
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostRenameWorkout(int id)
+    {
+        if (id < 0)
+            return NotFound();
+        if (!ModelState.IsValid)
+        {
+            await OnGet();
+            return Page();
+        }
+        await _mediator.Send(new UpdateWorkoutCommand(id, NewWorkoutName));
         return RedirectToPage();
     }
 }

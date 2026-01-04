@@ -77,23 +77,83 @@
                                                 <ul class="list-group mb-3">
                                                     @foreach (var sets in detail.Progress)
                                                     {
-                                                        <li class="list-group-item d-flex align-items-center justify-content-between gap-2"
-                                                            style="background: rgba(255,255,255,0.04); border-color: var(--black-light) !important; color: var(--text-light);">
-                                                            <span>
-                                                                @sets.UpdatedDate.ToShortDateString(): @sets.Weight кг × @sets.Reps
-                                                            </span>
+                                                        var editSetCollapseId = $"editset-{sets.SetId}";
 
-                                                            <form method="post" asp-page-handler="DeleteProgress" class="m-0"
-                                                                  onsubmit="return confirm('Удалить этот подход?');">
-                                                                <input type="hidden" name="id" value="@sets.SetId" />
-                                                                <input type="hidden" asp-for="WorkoutId" />
-                                                                <input type="hidden" asp-for="WorkoutName" />
-                                                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                                    ✕
-                                                                </button>
-                                                            </form>
+                                                        <li class="list-group-item"
+                                                            style="background: rgba(255,255,255,0.04); border-color: var(--black-light) !important; color: var(--text-light);">
+
+                                                            <div class="d-flex align-items-start justify-content-between gap-2">
+                                                                <span>
+                                                                    @sets.UpdatedDate.ToShortDateString(): @sets.Weight кг × @sets.Reps
+                                                                </span>
+
+                                                                <div class="d-flex gap-2">
+                                                  
+                                                                    <button class="btn btn-sm btn-outline-yellow"
+                                                                            type="button"
+                                                                            data-bs-toggle="collapse"
+                                                                            data-bs-target="#@editSetCollapseId"
+                                                                            aria-expanded="false"
+                                                                            aria-controls="@editSetCollapseId">
+                                                                        ✎
+                                                                    </button>
+
+                                                                   
+                                                                    <form method="post" asp-page-handler="DeleteProgress" class="m-0"
+                                                                          onsubmit="return confirm('Удалить этот подход?');">
+                                                                        <input type="hidden" name="id" value="@sets.SetId" />
+                                                                        <input type="hidden" asp-for="WorkoutId" />
+                                                                        <input type="hidden" asp-for="WorkoutName" />
+                                                                        <button type="submit" class="btn btn-sm btn-outline-danger">✕</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+
+                                                          
+                                                            <div class="collapse mt-2" id="@editSetCollapseId">
+                                                                <div class="card border rounded-3"
+                                                                     style="background: rgba(0,0,0,0.25); border-color: var(--black-light) !important;">
+                                                                    <div class="card-body p-3">
+
+                                                                        <form method="post" asp-page-handler="UpdateProgress" class="row g-2">
+                                                                            <input type="hidden" name="trackerId" value="@sets.SetId" />
+                                                                            <input type="hidden" asp-for="WorkoutId" />
+                                                                            <input type="hidden" asp-for="WorkoutName" />
+
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label class="form-label text-light fw-semibold mb-1">Вес (кг)</label>
+                                                                                <input class="form-control"
+                                                                                       type="number"
+                                                                                       name="weight"
+                                                                                       value="@sets.Weight"
+                                                                                       min="0"
+                                                                                       step="0.5" />
+                                                                            </div>
+
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label class="form-label text-light fw-semibold mb-1">Повторы</label>
+                                                                                <input class="form-control"
+                                                                                       type="number"
+                                                                                       name="reps"
+                                                                                       value="@sets.Reps"
+                                                                                       min="0"
+                                                                                       step="1" />
+                                                                            </div>
+
+                                                                            <div class="col-12">
+                                                                                <button class="btn btn-yellow fw-semibold w-100" type="submit">
+                                                                                    Сохранить изменения
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                         </li>
                                                     }
+
                                                 </ul>
                                             }
                                             <div class="row g-2">

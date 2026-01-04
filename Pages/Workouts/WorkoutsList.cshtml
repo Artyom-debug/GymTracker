@@ -32,6 +32,8 @@
             <div class="row g-4">
                 @foreach (var workout in Model.Workouts)
                 {
+                    var renameId = $"rename-{workout.WorkoutId}";
+
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="card h-100 border rounded-3 shadow-sm"
                              style="background: rgba(255,255,255,0.06);">
@@ -49,13 +51,22 @@
                                     Откройте тренировку, чтобы посмотреть упражнения и прогресс.
                                 </p>
 
-                                <div class="mt-auto d-flex gap-2 flex-wrap">
+                                <div class="mt-auto d-flex gap-2 flex-wrap align-items-start">
                                     <a class="btn btn-outline-yellow fw-semibold"
                                        asp-page="/Workouts/Workout"
                                        asp-route-WorkoutId="@workout.WorkoutId"
                                        asp-route-WorkoutName="@workout.Name">
                                         Открыть
                                     </a>
+
+                                    <button class="btn btn-outline-yellow fw-semibold"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#@renameId"
+                                            aria-expanded="false"
+                                            aria-controls="@renameId">
+                                        Изменить название
+                                    </button>
 
                                     <form method="post"
                                           asp-page-handler="DeleteWorkout"
@@ -66,11 +77,38 @@
                                             Удалить
                                         </button>
                                     </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                                    <div class="collapse w-100 mt-2" id="@renameId">
+                                        <div class="card border rounded-3"
+                                             style="background: rgba(0,0,0,0.25); border-color: var(--black-light) !important;">
+                                            <div class="card-body p-3">
+                                                <form method="post"
+                                                      asp-page-handler="RenameWorkout"
+                                                      class="rename-form d-flex gap-2 flex-wrap align-items-start m-0">
+                                                    <input type="hidden" name="id" value="@workout.WorkoutId" />
+
+                                                    <div class="flex-grow-1">
+                                                        <input asp-for="NewWorkoutName"
+                                                               class="form-control"
+                                                               value="@workout.Name"
+                                                               placeholder="Новое название" />
+                                                        <span asp-validation-for="NewWorkoutName" class="text-danger"></span>
+                                                    </div>
+
+                                                    <button type="submit" class="btn btn-yellow fw-semibold">
+                                                        Сохранить
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
                 }
+
                 <div class="col-12 col-md-6 col-lg-4">
                     <a asp-page="/Workouts/AddWorkout"
                        class="card h-100 border rounded-3 shadow-sm text-decoration-none d-flex align-items-center justify-content-center"
@@ -85,6 +123,9 @@
 
             </div>
         }
-
     </div>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
