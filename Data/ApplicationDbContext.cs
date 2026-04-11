@@ -31,9 +31,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                   .HasForeignKey(t => t.WorkoutId)
                   .OnDelete(DeleteBehavior.Cascade);
 
-            entity.ToTable(t => t.HasCheckConstraint("ValidReps", "Reps >= 0"));
+            entity.ToTable(t => t.HasCheckConstraint("ValidReps", "\"Reps\" >= 0"));
 
-            entity.ToTable(t => t.HasCheckConstraint("ValidWeight", "Weight >= 0"));
+            entity.ToTable(t => t.HasCheckConstraint("ValidWeight", "\"Weight\" >= 0"));
         });
 
         builder.Entity<Workout>(entity =>
@@ -54,8 +54,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                   .IsRequired()
                   .HasMaxLength(100);
 
-            entity.Property(w => w.CreatedAt)
-                  .HasColumnType("datetime");
         });
 
         builder.Entity<Exercise>(entity =>

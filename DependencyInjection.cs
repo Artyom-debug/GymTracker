@@ -12,7 +12,7 @@ public static class DependencyInjection
 
         //добавление сервиса бд
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlite(connectionString));
+            options.UseNpgsql(connectionString));
 
         //добавление Identity
         builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
